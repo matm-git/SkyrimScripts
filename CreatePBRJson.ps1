@@ -20,7 +20,7 @@ Get-ChildItem -Filter "*_n.dds" -Recurse | ForEach-Object {
     
     $relativePath = $_.FullName.Replace($currentPath, "").TrimStart("\")
     Write-Host $relativePath
-    $texturePath = $relativePath -replace '_n.dds$' -replace '^pbr\\', '' -replace '\\', '\'
+    $texturePath = $relativePath -replace '_n.dds$' -replace '^textures\\', '' -replace '^pbr\\', '' -replace '\\', '\'
 
     # Create JSON object and add it to the list
     $jsonList += @{
