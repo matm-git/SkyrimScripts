@@ -3,9 +3,13 @@ setlocal enabledelayedexpansion
 cls
 
 set "replaceMode=0"
-if /i "%1"=="replace" set "replaceMode=1"
+if /i "%1"=="replace" (
+    set "replaceMode=1"
+    echo Replacing existing meshes with optimised ones
+) else (
+    echo Start the script with 'replace' option to overwrite old nifs
+)
 
-echo Start the script with 'replace' option to overwrite old nifs
 echo.
 echo Searching for .nif files to optimise...
 set count=0
@@ -26,14 +30,18 @@ for %%f in (*.nif) do (
                         set "nifoptoutput=!sseoptoutput:.nif=.opt.nif!"  
                         if exist "!nifoptoutput!" (
                             echo NifOpt succesfully applied: !nifoptoutput!
-                            move /Y "!nifoptoutput!" "!filename!"
+                            if !replaceMode! == 1 (
+                                move /Y "!nifoptoutput!" "!filename!"
+                            )
                             del "!sseoptoutput!"
                         ) else (
                             set "nifoptoutput=!sseoptoutput:.nif=.rev.nif!" 
                             if exist "!nifoptoutput!" (
                                 echo NifOpt reverted to LE, removed the result: !nifoptoutput!
-                                del "!nifoptoutput!"    
-                                move /Y "!sseoptoutput!" "!filename!"
+                                del "!nifoptoutput!"
+                                if !replaceMode! == 1 (
+                                    move /Y "!sseoptoutput!" "!filename!"
+                                )
                             )
                         )
                         set /a count+=1
