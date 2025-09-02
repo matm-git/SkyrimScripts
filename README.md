@@ -1,9 +1,9 @@
 # CreatePBRJson
-CreatePBRJson.ps1: A simple powershell script to generate a basic PBR json for PBRNifPatcher or ParallaxGen
+CreatePBRJson.ps1: A simple powershell script to generate a basic PBR json for PBRNifPatcher or ParallaxGen.\
  Run it from the main folder of your mod and it creates the folder and a basic json
 
 # nifoptall
-nifoptall.bat: A simple batch script that runs SSE NIF Optimizer.exe and nifopt on all meshes in a folder.
+nifoptall.bat: A simple batch script that runs SSE NIF Optimizer.exe and nifopt on all meshes in a folder.\
  Requires both tools to be on the Windows path environment variable. Use 'nifoptall replace' to replace unoptimise versions instead of creating new files.
 
 # Create seasonal variations
