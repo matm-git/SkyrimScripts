@@ -1,7 +1,7 @@
 unit UserScript;
 //This script duplicates FormIds from an input plugin and creates 4 seasonal copies (SPR,SUM,AUT,WIN) in a targetFileName
 //It requires to set inputFileName (default 'Seasonal variations Input.esp') in the script itself and that plugin must be loaded in xEdit. All FormIds of this plugin will be read.
-//It requires to set targetFileName (default 'Seasonal variations Output.esp') in the script itself and that plugin must be loaded in xEdit. This will be used to write the output FormIds.
+//It requires to set targetFileName (default 'PBR Flora Overhaul Seasons.esp') in the script itself and that plugin must be loaded in xEdit. This will be used to write the output FormIds.
 var
   targetFile, inputFile: IInterface;
   outFile: TextFile;
@@ -15,10 +15,11 @@ var
   suffixes: array[0..3] of string;
   modelElem: IInterface;
   oldModelPath, newModelPath: string;  
+  recordSignature : string;
 begin
   // Zielplugin festlegen
   inputFileName :='Seasonal variations Input.esp';
-  targetFileName := 'Seasonal variations Output.esp';
+  targetFileName := 'PBR Flora Overhaul Seasons.esp';
   
   Result := 0;
   targetFile := FileByName(targetFileName);
@@ -48,13 +49,18 @@ begin
     srcRec := RecordByIndex(inputFile, i);
     if not Assigned(srcRec) then Continue;
 
+    AddRequiredElementMasters(GetFile(srcRec), targetFile, false);
+
+    recordSignature := Signature(srcRec);
+    AddMessage('[' + GetRecordTypeName(recordSignature) + ']' );
+
     edid := GetElementEditValues(srcRec, 'EDID');
     if edid = '' then
       edid := 'NoEditorID_' + IntToHex(FixedFormID(srcRec), 8);
 
      // Vier Kopien erzeugen, per Index statt "for..in"
     for j := Low(suffixes) to High(suffixes) do begin
-      AddRequiredElementMasters(GetFile(srcRec), targetFile, false);
+
       newRec := wbCopyElementToFile(srcRec, targetFile, True, True);
 
 
@@ -99,6 +105,38 @@ begin
   end;
 
 
+end;
+
+
+function GetRecordTypeName(signature: string): string;
+var
+  signatures: TStringList;
+  names: TStringList;
+  index: integer;
+begin
+  signatures := TStringList.Create;
+  names := TStringList.Create;
+  try
+    // Signaturen
+    signatures.Add('TREE');
+    signatures.Add('FLOR');
+    signatures.Add('GRAS');
+
+    
+    // Entsprechende Namen
+    names.Add('Trees');
+    names.Add('Flora');
+    names.Add('Grass');
+    
+    index := signatures.IndexOf(signature);
+    if index >= 0 then
+      Result := names[index]
+    else
+      Result := signature; // Fallback
+  finally
+    signatures.Free;
+    names.Free;
+  end;
 end;
 
 end.
