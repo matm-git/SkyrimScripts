@@ -1,7 +1,7 @@
 unit UserScript;
-//This script duplicates FormIds from an input file and creates 4 seasonal copies (SPR,SUM,AUT,WIN) in a targetFileName
-//It requires to set inputFileName (default 'Input records for Seasons conversion.esp') in the script itself and that plugin must be loaded in xEdit. All FormIds of this plugin will be read.
-//It requires to set targetFileName (default ''PBR Flora Overhaul Seasons.esp') in the script itself and that plugin must be loaded in xEdit. This will be used to write the output FormIds.
+//This script duplicates FormIds from an input plugin and creates 4 seasonal copies (SPR,SUM,AUT,WIN) in a targetFileName
+//It requires to set inputFileName (default 'Seasonal variations Input.esp') in the script itself and that plugin must be loaded in xEdit. All FormIds of this plugin will be read.
+//It requires to set targetFileName (default 'Seasonal variations Output.esp') in the script itself and that plugin must be loaded in xEdit. This will be used to write the output FormIds.
 var
   targetFile, inputFile: IInterface;
   outFile: TextFile;
@@ -17,8 +17,8 @@ var
   oldModelPath, newModelPath: string;  
 begin
   // Zielplugin festlegen
-  inputFileName :='Input records for Seasons conversion.esp';
-  targetFileName := 'PBR Flora Overhaul Seasons.esp';
+  inputFileName :='Seasonal variations Input.esp';
+  targetFileName := 'Seasonal variations Output.esp';
   
   Result := 0;
   targetFile := FileByName(targetFileName);
